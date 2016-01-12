@@ -58,12 +58,13 @@ if ($_SERVER['PHP_AUTH_USER'] == $auth_user && $_SERVER['PHP_AUTH_PW'] == $auth_
         Logger::addLog('Trans ID: '.$json->transaction->id, 1, null, null, null, true);
         
         if ($json->transaction->method == 'bitcoin') {
-            $cart_id = (int) $json->transaction->description;
+            $transaction_order_id = (int) $json->transaction->description;
+            $order_id = Order::getOrderByCartId($transaction_order_id);
         } else {
-            $cart_id = (int) $json->transaction->order_id;
+            $transaction_order_id =  str_replace('#', '', $json->transaction->order_id);
+            $order = new Order((int) $transaction_order_id);
+            $order_id = $order->id;
         }
-
-        $order_id = Order::getOrderByCartId($cart_id);
         
         if ($order_id) {
             Logger::addLog('IF ORDER: '.$order_id, 1, null, null, null, true);

@@ -35,6 +35,10 @@ class OpenpayCharge extends OpenpayApiResourceBase {
         }
     }
 
+    public function update($params) {
+        return $this->_updateCharge($params);
+    }
+    
 }
 
 // ----------------------------------------------------------------------------
